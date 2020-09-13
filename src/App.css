@@ -1,0 +1,186 @@
+/* @import "react-vis/dist/style"; */
+body {
+	/* background-color: #f5f5f5; */
+  padding-top: 56px;
+  min-height: 100%;
+}
+
+.header {
+	/* box-shadow: 0px 0px 4px 0px aliceblue; */
+	/* z-index: 2; */
+  /* background-image: linear-gradient(to right, #5ce1e6 , #5271ff); */
+  /* background-color: slategrey; */
+}
+
+.heading1 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.create-c {
+  margin-top: 20px;
+  /* box-shadow: 0 20px 50px rgba(59, 43, 91, 0.7); */
+  box-shadow: 0 0 20px 0px rgba(59, 43, 91, 0.7);
+  padding: 50px 30px;
+  border-radius: 5px;
+}
+
+/* .table-header {
+  font-size: 20px;
+  margin-bottom: 15px;
+} */
+
+.card1 {
+  /* box-shadow: 0 0 20px 0px rgba(59, 43, 91, 0.7); */
+  box-shadow: 0 0 10px 0px rgba(59, 43, 91, 0.4);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+
+
+.in-cases {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.in-active {
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.in-deaths {
+  color: red;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.in-recovered {
+  color: green;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.state-deaths-num {
+  color: red;
+}
+
+.state-recovered-num {
+  color: green;
+}
+
+
+.graph-c {
+  /* padding */
+}
+
+.pie-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.card2-row {
+  justify-content: center;
+}
+.card2 {
+  box-shadow: 0 0 10px 0px rgba(59, 43, 91, 0.4);
+  /* padding: 20px; */
+  border-radius: 5px;
+  text-align: center;
+  margin: 20px 20px;
+  padding: 40px 20px;
+}
+.card2 .c-title {
+  font-weight: bold;
+}
+.card2 .state-name {
+  font-size: 1.6rem;
+}
+
+
+/* START | HOME 2 */
+.h2-container {
+  background-color: #333;
+  height: 100%;
+}
+.h2-hero-c {
+  position: relative;
+}
+.h2-bg-img {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  /* z-index: -1; */
+}
+.h2-center-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.h2-title1 {
+  /* margin-top: -600px; */
+  text-align: center;
+  /* font-size: 50px; */
+  font-size: 2.5rem;
+  filter: grayscale(0%);
+}
+.h2-death-count {
+  /* margin-top: -500px; */
+  text-align: center;
+  /* font-size: 240px; */
+  font-size: 11rem;
+  filter: grayscale(0%);
+  /* color: #b71c1c; */
+}
+/* END | HOME 2 */
+
+
+/* START | HOME 3 */
+.h3-container {
+  /* background-color: #131417; */
+  /* background-color: #333; */
+  background-color: #1b2431;
+  /* height: 100vh; */
+  /* color: #131417; */
+  padding-bottom: 100px;
+}
+
+.summary {
+  color: #fff;
+  /* background-color: #131417; */
+  background-color: #1f2229;
+  padding: 30px;
+  border-radius: 4px;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 30px rgba(0,0,0,.5);
+}
+.rhs1-container {
+  color: #fff;
+  /* background-color: #131417; */
+  background-color: #1f2229;
+  padding: 30px;
+  border-radius: 4px;
+  /* font-size: 2rem; */
+  box-shadow: 0 4px 30px rgba(0,0,0,.5);
+}
+.country-title {
+  font-size: 1.6rem;
+}
+.h3-stat {
+  font-size: 1.2rem;
+}
+.h3-death-num {
+  color: red;
+}
+.h3-recovered-num {
+  color: green;
+}
+
+.h3-death-big-num {
+  color: red;
+}
+/* END | HOME 3 */
