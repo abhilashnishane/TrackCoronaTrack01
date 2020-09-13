@@ -62,8 +62,8 @@ export default class InnerNavbar extends React.Component {
 
     return(
       <div>
-        <Navbar color="light" light expand="md" className="header fixed-top">
-          <NavbarBrand href="/home" className="" style={{color: '#333'}}>Track Corona Track</NavbarBrand>
+        <Navbar color="" expand="md" className="header fixed-top">
+          <NavbarBrand href="/home" className="">Track Corona Track</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
               <Nav className="ml-auto" navbar>

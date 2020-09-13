@@ -167,7 +167,7 @@ class Home extends React.Component {
     var xDomain = [0, 250];
 
     return (
-      <div>
+      <div className="h1-container">
         <InnerNavbar />
         <Container fluid>
 
@@ -180,27 +180,27 @@ class Home extends React.Component {
               <div className="heading1">Covid-19 Dasboard India</div>
 
               <Row className="mb-5">
-                <Col md={3}>
+                <Col md={3} xs={6}>
                   <div className="card1">
-                    <div>India Cases</div>
+                    <div><span className="card1-in">India</span> Cases</div>
                     <div className="in-cases">{this.state.indiaConfirmed}</div>
                   </div>
                 </Col>
-                <Col md={3}>
+                <Col md={3} xs={6}>
                   <div className="card1">
-                    <div>India Active</div>
+                    <div><span className="card1-in">India</span> Active</div>
                     <div className="in-active">{this.state.indiaActive}</div>
                   </div>
                 </Col>
-                <Col md={3}>
+                <Col md={3} xs={6}>
                   <div className="card1">
-                    <div>India Deaths</div>
+                    <div><span className="card1-in">India</span> Deaths</div>
                     <div className="in-deaths">{this.state.indiaDeaths}</div>
                   </div>
                 </Col>
-                <Col md={3}>
+                <Col md={3} xs={6}>
                   <div className="card1">
-                    <div>India Recovered</div>
+                    <div><span className="card1-in">India</span> Recovered</div>
                     <div className="in-recovered">{this.state.indiaRecovered}</div>
                   </div>
                 </Col>
@@ -216,7 +216,7 @@ class Home extends React.Component {
           <Row>
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Total confirmed cases, (<s>active cases</s>,) recoveries and deaths</div>
                 <FlexibleXYPlot height={250} {...{xDomain, yDomain}}>
                   <HorizontalGridLines />
@@ -258,7 +258,7 @@ class Home extends React.Component {
             </Col>
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new deaths</div>
                 <FlexibleXYPlot height={250} xDomain={[0, 250]} yDomain={[0, 2500]} >
                   <HorizontalGridLines />
@@ -293,7 +293,7 @@ class Home extends React.Component {
           <Row>
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new cases</div>
                 <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]}>
                   <HorizontalGridLines />
@@ -323,7 +323,7 @@ class Home extends React.Component {
             </Col>
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new cases (Bar chart)</div>
                 <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]}>
                   <VerticalGridLines />
@@ -341,7 +341,7 @@ class Home extends React.Component {
           <Row>
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Total Confirmed from beginning (30th Jan to Today)</div>
                 <FlexibleXYPlot height={250} {...{xDomain, yDomain}}>
                   <HorizontalGridLines />
@@ -389,7 +389,7 @@ class Home extends React.Component {
           <Row className="mt-3">
 
             <Col md="6">
-              <div className="graph-c px-5">
+              <div className="graph-c">
                 <div className="mt-3 mb-3 text-center">Statewise Statistics</div>
                 <div style={{height: '400px', overflow: 'auto'}}>
                   <Table hover >
@@ -411,7 +411,7 @@ class Home extends React.Component {
             </Col>
 
             <Col md="6">
-              <div className="px-5 pie-container">
+              <div className="graph-c pie-container">
                 <div className="mt-3 mb-3 text-center">Overall Deaths vs Active Cases vs Recovered in India</div>
                 <div className="" style={{height: '400px', display: 'flex', alignItems: 'center'}}>
                   <RadialChart
@@ -447,6 +447,8 @@ class Home extends React.Component {
           </Row> 
           
           <div className="" style={{marginTop: '200px'}}></div>
+
+          <div className="footer-c">All Rights Reserved &copy; 2020 TrackCoronaTrack</div>
 
         </Container>
       </div>

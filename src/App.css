@@ -1,7 +1,10 @@
-/* @import "react-vis/dist/style"; */
+/* @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap'); */
+
 body {
-	/* background-color: #f5f5f5; */
+  /* background-color: #f5f5f5; */
+  /* font-family: 'Quicksand', sans-serif; */
   padding-top: 56px;
+  padding-top: 32px;
   min-height: 100%;
 }
 
@@ -9,15 +12,37 @@ body {
 	/* box-shadow: 0px 0px 4px 0px aliceblue; */
 	/* z-index: 2; */
   /* background-image: linear-gradient(to right, #5ce1e6 , #5271ff); */
-  /* background-color: slategrey; */
+  background-color: #323a46;
+  color: #4CAF50;
+}
+.navbar-brand {
+  color: burlywood;
+}
+.navbar-brand:hover {
+  color: bisque;
 }
 
+
 .heading1 {
+  margin-top: 30px;
   margin-bottom: 30px;
   font-size: 1.8rem;
   text-align: center;
   font-weight: 700;
 }
+
+@media screen and (max-width: 767px) {
+  .heading1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .card1-in {
+    display: none;
+  }
+}
+
 
 .create-c {
   margin-top: 20px;
@@ -37,7 +62,15 @@ body {
   box-shadow: 0 0 10px 0px rgba(59, 43, 91, 0.4);
   padding: 20px;
   border-radius: 5px;
+  border-left: 3px solid #fff;
 }
+
+@media screen and (max-width: 767px) {
+  .card1 {
+    margin-bottom: 18px;
+  }
+}
+
 
 
 
@@ -73,13 +106,25 @@ body {
 
 
 .graph-c {
-  /* padding */
+  padding: 20px 60px;
+}
+
+@media screen and (max-width: 767px) {
+  .graph-c {
+    padding: 0;
+  }
 }
 
 .pie-container {
   align-items: center;
   display: flex;
   flex-direction: column;
+}
+
+@media screen and (max-width: 767px) {
+  .pie-container  {
+    margin-top: 30px;
+  }
 }
 
 
@@ -93,6 +138,7 @@ body {
   text-align: center;
   margin: 20px 20px;
   padding: 40px 20px;
+  border-bottom: 3px solid #fff;
 }
 .card2 .c-title {
   font-weight: bold;
@@ -184,3 +230,32 @@ body {
   color: red;
 }
 /* END | HOME 3 */
+
+
+/* START | FOOTER */
+.footer-c {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #999;
+  padding: 20px;
+  /* border-top */
+}
+/* END | FOOTER */
+
+
+
+/* START | UI 2 */
+/* .navbar-toggler {
+  border: 1px solid #fff;
+}
+.h1-container {
+  background-color: #1b2431;
+  color: #fff;
+}
+.card1, .card2 {
+  background-color: #273142;
+}
+.table {
+  color: #fff;
+} */
+/* END | UI 2 */
