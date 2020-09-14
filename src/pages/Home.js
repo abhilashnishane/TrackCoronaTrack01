@@ -25,7 +25,38 @@ import {
 import "react-vis/dist/style.css";
 import InnerNavbar from '../components/InnerNavbar';
 
+// import DiscreteColorLegend from 'legends/discrete-color-legend';
+import DiscreteColorLegend from 'react-vis/dist/legends/discrete-color-legend';
+import GradientDefs from 'react-vis/dist/plot/gradient-defs';
+
+
+
 const FlexibleXYPlot = makeWidthFlexible(XYPlot); 
+
+const ITEMS1 = [
+  {title: 'confirmed', color: '#FFCA28'},
+  {title: 'recovered', color: '#43A047'},
+  {title: 'deaths', color: '#e53935'}
+];
+const ITEMS2 = [
+  {title: 'deaths', color: '#e53935'}
+];
+const ITEMSNEWCASES = [
+  {title: 'confirmed', color: '#FFCA28'}
+];
+const ITEMSNEWCASESBAR = [
+  {title: 'confirmed', color: '#FFCA28'}
+];
+const ITEMSTOTALCONFIRMED = [
+  {title: 'confirmed', color: '#FFCA28'}
+];
+
+const ITEMSPIEOVERALL = [
+  {title: 'deaths', color: '#e57373'},
+  {title: 'active', color: '#78909C'},
+  {title: 'recovered', color: '#81C784'}
+];
+
 
 
 class Home extends React.Component {
@@ -51,6 +82,15 @@ class Home extends React.Component {
       // graph_data_12: [],
       graph_data_13: [],
       graph_data_14: [],
+
+      hoveredNode1: null,
+      hoveredNode2: null,
+      hoveredNode3: null,
+
+      hoveredNodeNewDeaths: null,
+      hoveredNodeNewCases: null,
+      hoveredNodeNewCasesBar: null,
+      hoveredNodeTotalConfirmed: null
     }
   }
 
@@ -100,6 +140,7 @@ class Home extends React.Component {
         this.props.largeData.cases_time_series.map((casee, i) => {
           graph1.push({
             x: i,
+            // x: casee.date,
             y: casee.totalconfirmed
           });
         });
@@ -129,9 +170,9 @@ class Home extends React.Component {
           graph_data_21: graph21,
 
           pieData: [
-            { angle: this.props.largeData.statewise[0].deaths },
-            { angle: this.props.largeData.statewise[0].active },
-            { angle: this.props.largeData.statewise[0].recovered },
+            { angle: this.props.largeData.statewise[0].deaths, color: '#e57373', label: 'deaths' },
+            { angle: this.props.largeData.statewise[0].active, color: '#78909C', label: 'active' },
+            { angle: this.props.largeData.statewise[0].recovered, color: '#81C784', label: 'recovered' },
           ]
         }) 
         // const pieData = [{angle: 1}, {angle: 5}, {angle: 2}];
@@ -139,12 +180,18 @@ class Home extends React.Component {
 
   }
 
+  handlePieMouseOver = () => {
+
+  }
+
 
   render () {
     const {useCanvas} = this.state;
+    const { hoveredNode1, hoveredNode2, hoveredNode3, hoveredNodeNewDeaths, hoveredNodeNewCases, hoveredNodeNewCasesBar, hoveredNodeTotalConfirmed } = this.state;
     const content = useCanvas ? 'TOGGLE TO SVG' : 'TOGGLE TO CANVAS';
     const Line = useCanvas ? LineSeriesCanvas : LineSeries;
     const BarSeries = useCanvas ? VerticalBarSeriesCanvas : VerticalBarSeries;
+
 
     var statewise = '';
     if(this.props.largeData.statewise) {
@@ -218,20 +265,30 @@ class Home extends React.Component {
             <Col md="6">
               <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Total confirmed cases, (<s>active cases</s>,) recoveries and deaths</div>
-                <FlexibleXYPlot height={250} {...{xDomain, yDomain}}>
+                <FlexibleXYPlot 
+                  height={250} 
+                  {...{xDomain, yDomain}} 
+                  margin={{left: 80}} 
+                  onMouseLeave={() => this.setState({hoveredNode1: null, hoveredNode2: null, hoveredNode3: null})}
+                  className="graph1-c"
+                >
                   <HorizontalGridLines />
                   <VerticalGridLines />
                   <XAxis />
                   <YAxis />
                   <ChartLabel 
-                    text="X Axis"
+                    text="X Axis (Days from 30 Jan 2020)"
                     className="alt-x-label"
                     includeMargin={false}
-                    />
+                    xPercent={0.025}
+                    yPercent={1.01}
+                  />
                   <ChartLabel 
-                    text="Y Axis"
+                    text="count"
                     className="alt-y-label"
                     includeMargin={false}
+                    xPercent={0.06}
+                    yPercent={0.06}
                     style={{
                       transform: 'rotate(-90)',
                       textAnchor: 'end'
@@ -240,6 +297,10 @@ class Home extends React.Component {
                   <Line
                     className="first-series"
                     data={this.state.graph_data_11}
+                    onNearestX={(value, { index }) => {this.setState({hoveredNode1: value}); } }
+                    xOffset={0}
+                    yOffset={0}
+                    color="#FFCA28"
                   />
                   {/* <Line
                     className="first-series"
@@ -248,32 +309,60 @@ class Home extends React.Component {
                   <Line
                     className="first-series"
                     data={this.state.graph_data_13}
+                    onNearestX={(value, { index }) => {this.setState({hoveredNode2: value}); } }
+                    xOffset={300}
+                    yOffset={300}
+                    color="#43A047"
                   />
                   <Line
                     className="first-series"
                     data={this.state.graph_data_14}
+                    onNearestX={(value, { index }) => {this.setState({hoveredNode3: value}); } } 
+                    color="#e53935"
                   />
+                  {hoveredNode1 && (
+                    <Hint
+                      getX={d => d.x}
+                      getY={d => d.y}
+                      value={{
+                        Date: hoveredNode1.x,
+                        '_____':'______________',
+                        Confirmed: hoveredNode1.y,
+                        Recovered: hoveredNode2.y,
+                        Deaths: hoveredNode3.y
+                      }}
+                      style={{marginLeft: 100, marginTop: -200}}
+                    />
+                  )}
+
                 </FlexibleXYPlot>
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMS1} />
+                </div>
               </div>
             </Col>
 
             <Col md="6">
               <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new deaths</div>
-                <FlexibleXYPlot height={250} xDomain={[0, 250]} yDomain={[0, 2500]} >
+                <FlexibleXYPlot height={250} xDomain={[0, 250]} yDomain={[0, 2500]} margin={{left: 80}} onMouseLeave={() => this.setState({hoveredNodeNewDeaths: null})}>
                   <HorizontalGridLines />
                   <VerticalGridLines />
                   <XAxis />
                   <YAxis />
                   <ChartLabel 
-                    text="X Axis"
+                    text="X Axis (Days from 30 Jan 2020)"
                     className="alt-x-label"
                     includeMargin={false}
-                    />
+                    xPercent={0.025}
+                    yPercent={1.01}
+                  />
                   <ChartLabel 
-                    text="Y Axis"
+                    text="count"
                     className="alt-y-label"
                     includeMargin={false}
+                    xPercent={0.06}
+                    yPercent={0.06}
                     style={{
                       transform: 'rotate(-90)',
                       textAnchor: 'end'
@@ -282,8 +371,25 @@ class Home extends React.Component {
                   <Line
                     className="first-series"
                     data={this.state.graph_data_21}
+                    color="#e53935"
+                    onNearestX={(value, { index }) => {this.setState({hoveredNodeNewDeaths: value}); } } 
                   />
+                  {hoveredNodeNewDeaths && (
+                    <Hint
+                      getX={d => d.x}
+                      getY={d => d.y}
+                      value={{
+                        Date: hoveredNodeNewDeaths.x,
+                        '_____':'______________',
+                        Deaths: hoveredNodeNewDeaths.y
+                      }}
+                      style={{marginLeft: 100, marginTop: -200}}
+                    />
+                  )}
                 </FlexibleXYPlot>
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMS2} />
+                </div>
               </div>
             </Col>
 
@@ -295,20 +401,24 @@ class Home extends React.Component {
             <Col md="6">
               <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new cases</div>
-                <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]}>
+                <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]} margin={{left: 80}} onMouseLeave={() => this.setState({hoveredNodeNewCases: null})}>
                   <HorizontalGridLines />
                   <VerticalGridLines />
                   <XAxis />
                   <YAxis />
                   <ChartLabel 
-                    text="X Axis"
+                    text="X Axis (Days from 30 Jan 2020)"
                     className="alt-x-label"
                     includeMargin={false}
-                    />
+                    xPercent={0.025}
+                    yPercent={1.01}
+                  />
                   <ChartLabel 
-                    text="Y Axis"
+                    text="count"
                     className="alt-y-label"
                     includeMargin={false}
+                    xPercent={0.06}
+                    yPercent={0.06}
                     style={{
                       transform: 'rotate(-90)',
                       textAnchor: 'end'
@@ -317,21 +427,74 @@ class Home extends React.Component {
                   <Line
                     className="first-series"
                     data={this.state.graph_data_2}
+                    color="#FFCA28"
+                    onNearestX={(value, { index }) => {this.setState({hoveredNodeNewCases: value}); } } 
                   />
+                  {hoveredNodeNewCases && (
+                    <Hint
+                      getX={d => d.x}
+                      getY={d => d.y}
+                      value={{
+                        Date: hoveredNodeNewCases.x,
+                        '_____':'______________',
+                        Deaths: hoveredNodeNewCases.y
+                      }}
+                      style={{marginLeft: 100, marginTop: -200}}
+                    />
+                  )}
                 </FlexibleXYPlot>
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMSNEWCASES} />
+                </div>
               </div>
             </Col>
 
             <Col md="6">
               <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Daily new cases (Bar chart)</div>
-                <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]}>
+                <FlexibleXYPlot height={250} yDomain={[0, 100000]} xDomain={[0, 250]} margin={{left: 80}} onMouseLeave={() => this.setState({hoveredNodeNewCasesBar: null})}>
                   <VerticalGridLines />
                   <HorizontalGridLines />
                   <XAxis />
                   <YAxis />
-                  <BarSeries className="vertical-bar-series-example" data={this.state.graph_data_2} />
+                  <ChartLabel 
+                    text="X Axis (Days from 30 Jan 2020)"
+                    className="alt-x-label"
+                    includeMargin={false}
+                    xPercent={0.025}
+                    yPercent={1.01}
+                  />
+                  <ChartLabel 
+                    text="count"
+                    className="alt-y-label"
+                    includeMargin={false}
+                    xPercent={0.06}
+                    yPercent={0.06}
+                    style={{
+                      transform: 'rotate(-90)',
+                      textAnchor: 'end'
+                    }}
+                  />
+                  <BarSeries className="vertical-bar-series-example" data={this.state.graph_data_2}
+                    color="#FFCA28" 
+                    onNearestX={(value, { index }) => {this.setState({hoveredNodeNewCasesBar: value}); } }
+                  />
+                  {hoveredNodeNewCasesBar && (
+                    <Hint
+                      getX={d => d.x}
+                      getY={d => d.y}
+                      value={{
+                        Date: hoveredNodeNewCasesBar.x,
+                        '_____':'______________',
+                        Deaths: hoveredNodeNewCasesBar.y
+                      }}
+                      style={{marginLeft: 100, marginTop: -200}}
+                    />
+                  )}
                 </FlexibleXYPlot>
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMSNEWCASESBAR} />
+                </div>
               </div>
             </Col>
 
@@ -343,20 +506,24 @@ class Home extends React.Component {
             <Col md="6">
               <div className="graph-c">
                 <div className="mt-3 mb-2 text-center">Total Confirmed from beginning (30th Jan to Today)</div>
-                <FlexibleXYPlot height={250} {...{xDomain, yDomain}}>
+                <FlexibleXYPlot height={250} {...{xDomain, yDomain}} margin={{left: 80}} onMouseLeave={() => this.setState({hoveredNodeTotalConfirmed: null})}>
                   <HorizontalGridLines />
                   <VerticalGridLines />
                   <XAxis />
                   <YAxis />
                   <ChartLabel 
-                    text="X Axis"
+                    text="X Axis (Days from 30 Jan 2020)"
                     className="alt-x-label"
                     includeMargin={false}
-                    />
+                    xPercent={0.025}
+                    yPercent={1.01}
+                  />
                   <ChartLabel 
-                    text="Y Axis"
+                    text="count"
                     className="alt-y-label"
                     includeMargin={false}
+                    xPercent={0.06}
+                    yPercent={0.06}
                     style={{
                       transform: 'rotate(-90)',
                       textAnchor: 'end'
@@ -365,8 +532,25 @@ class Home extends React.Component {
                   <Line
                     className="first-series"
                     data={this.state.graph_data_1}
+                    color="#FFCA28" 
+                    onNearestX={(value, { index }) => {this.setState({hoveredNodeTotalConfirmed: value}); } }
                   />
-                </FlexibleXYPlot>
+                  {hoveredNodeTotalConfirmed && (
+                    <Hint
+                      getX={d => d.x}
+                      getY={d => d.y}
+                      value={{
+                        Date: hoveredNodeTotalConfirmed.x,
+                        '_____':'______________',
+                        Deaths: hoveredNodeTotalConfirmed.y
+                      }}
+                      style={{marginLeft: 100, marginTop: -200}}
+                    />
+                  )}
+                </FlexibleXYPlot>               
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMSTOTALCONFIRMED} />
+                </div>
               </div>
             </Col>
 
@@ -418,7 +602,13 @@ class Home extends React.Component {
                     data={this.state.pieData}
                     width={300}
                     height={300} 
+                    colorType="literal"
+                    showLabels={true}
+                    onValueMouseOver={this.handlePieMouseOver}
                   />
+                </div>
+                <div className="color-legend">
+                  <DiscreteColorLegend orientation="horizontal" items={ITEMSPIEOVERALL} />
                 </div>
               </div>
             </Col>
