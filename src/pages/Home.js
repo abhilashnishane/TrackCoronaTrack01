@@ -3,6 +3,20 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchLargeData } from '../actions/homeActions';
 
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebase from 'firebase';
+
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem } from 'reactstrap';
 import { Container, Row, Col } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { Table } from 'reactstrap';
@@ -29,6 +43,18 @@ import InnerNavbar from '../components/InnerNavbar';
 import DiscreteColorLegend from 'react-vis/dist/legends/discrete-color-legend';
 import GradientDefs from 'react-vis/dist/plot/gradient-defs';
 
+// Configure Firebase.
+const config = {
+  apiKey: "AIzaSyBG0HaNk2YWBp1cHllsVpYszZFI3J-hG1c",
+  authDomain: "trackcoronatrack01.firebaseapp.com",
+  databaseURL: "https://trackcoronatrack01.firebaseio.com",
+  projectId: "trackcoronatrack01",
+  storageBucket: "trackcoronatrack01.appspot.com",
+  messagingSenderId: "245771598728",
+  appId: "1:245771598728:web:402f79ff525fd35f13983d",
+  measurementId: "G-QDTDEHXB7J"
+};
+firebase.initializeApp(config);
 
 
 const FlexibleXYPlot = makeWidthFlexible(XYPlot); 
@@ -63,7 +89,13 @@ class Home extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.toggle = this.toggle.bind(this);
+    // this.logout = this.logout.bind(this);
+
     this.state = {
+      isSignedIn: false,
+      isOpen: false,
       // statewise: [],
       useCanvas: false,
       // cases_time_series: [],
@@ -94,10 +126,38 @@ class Home extends React.Component {
     }
   }
 
+  toggle() {
+    this.setState({
+        isOpen: !this.state.isOpen
+    });
+  }
+
+  // Configure FirebaseUI.
+  uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: 'popup',
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID
+    ],
+    callbacks: {
+      // Avoid redirects after sign-in.
+      signInSuccessWithAuthResult: () => false
+    }
+  };
+
   componentDidMount() {
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
+      (user) => this.setState({isSignedIn: !!user})
+    );
     // check if login cookie already exists
     // this.fetchIndiaData();
     this.props.fetchLargeData();
+  }
+
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
   }
 
   componentDidUpdate(prevProps) {
@@ -213,9 +273,34 @@ class Home extends React.Component {
     var yDomain = [0, 5000000];
     var xDomain = [0, 250];
 
+    if (!this.state.isSignedIn) {
+      return (
+        <div className="text-center">
+          <h1>TrackCoronaTrack</h1>
+          <p>Please sign-in to view India dashboard</p>
+          <StyledFirebaseAuth uiConfig={this.uiConfig} firebaseAuth={firebase.auth()}/>
+        </div>
+      );
+    }
+
     return (
       <div className="h1-container">
-        <InnerNavbar />
+        {/* <InnerNavbar /> */}
+
+        <div>
+          <Navbar color="" expand="md" className="header fixed-top">
+            <NavbarBrand href="/home" className="">Track Corona Track</NavbarBrand>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+                <Nav className="ml-auto" navbar>
+                  <div className="user-name-div">Welcome {firebase.auth().currentUser.displayName}!</div>
+                  <Button outline color="primary" onClick={() => firebase.auth().signOut()}>Logout</Button>
+                </Nav>
+            </Collapse>
+          </Navbar>
+        </div>
+
+
         <Container fluid>
 
           <Row className="mt-4">
